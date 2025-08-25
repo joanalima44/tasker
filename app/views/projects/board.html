@@ -1,0 +1,73 @@
+{% extends "layouts/base.html" %}
+{% block title %}Tarefas · Tasker{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="hero">
+    <h1 class="hero-title page-title">Tarefas</h1>
+
+    <form class="hero-action" method="post" action="{{ url_for('tasks.create_task') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input class="input" type="text" name="title" placeholder="Nova tarefa" required>
+      <input type="hidden" name="project_id" value="{{ project.id }}">
+      <button class="primary-btn" type="submit">Adicionar</button>
+    </form>
+  </div>
+
+  <div class="columns">
+    <!-- TODO -->
+    <div class="column">
+      <div class="column-head">
+        <span>To-do</span>
+        <span class="badge badge-amber">{{ columns['todo']|length }}</span>
+      </div>
+      <ul class="droplist" data-status="todo">
+        {% for t in columns['todo'] %}
+        <li class="task-card draggable" draggable="true" data-task-id="{{ t.id }}">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="grip" aria-hidden="true">⋮⋮</span>
+          </div>
+          <div class="task-title">{{ t.title }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- DOING -->
+    <div class="column">
+      <div class="column-head">
+        <span>Doing</span>
+        <span class="badge">{{ columns['doing']|length }}</span>
+      </div>
+      <ul class="droplist" data-status="doing">
+        {% for t in columns['doing'] %}
+        <li class="task-card draggable" draggable="true" data-task-id="{{ t.id }}">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="grip" aria-hidden="true">⋮⋮</span>
+          </div>
+          <div class="task-title">{{ t.title }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- DONE -->
+    <div class="column">
+      <div class="column-head">
+        <span>Done</span>
+        <span class="badge badge-green">{{ columns['done']|length }}</span>
+      </div>
+      <ul class="droplist" data-status="done">
+        {% for t in columns['done'] %}
+        <li class="task-card draggable" draggable="true" data-task-id="{{ t.id }}">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="grip" aria-hidden="true">⋮⋮</span>
+          </div>
+          <div class="task-title">{{ t.title }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
